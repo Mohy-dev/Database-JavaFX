@@ -183,7 +183,7 @@ public class DataBase extends Application {
 
         File cssLocation = new File("C:\\Users\\mohya\\Desktop\\JavaLabs\\JavaNotepad\\src\\main\\java\\dataBase\\database.css");
 
-        Scene scene = new Scene(body, 400, 400);
+        Scene scene = new Scene(body, 400, 400); //Stack pane will added and gui will be fixed soon
 
         stage.setTitle("DataBase Interface");
 
