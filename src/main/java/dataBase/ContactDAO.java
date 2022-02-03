@@ -108,7 +108,7 @@ public class ContactDAO  {
                     "name = '" + update.getName() + "''," +
                     "nick_name = '" + update.getNick_name() + "'," +
                     "cell_phone = '" + update.getCell_phone() + "'," +
-                    "email = '" + update.getEmail() + " where id = " + update.getId() + ";";
+                    "email = '" + update.getEmail() + " where id = " + update.getId() + ";"; // will be replaced with prepared statement
             Statement st = con.createStatement();
             st.executeUpdate(updateQuery);
         } catch (SQLException e) {
