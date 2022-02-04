@@ -10,12 +10,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import java.io.File;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
@@ -26,7 +24,7 @@ import static java.lang.Integer.parseInt;
 
 public class DataBase extends Application {
 
-        static int postion = 0;
+        static int position = 0;
 
         List<ContactPerson> tableAll = ContactDAO.getContacts();
 
@@ -43,19 +41,19 @@ public class DataBase extends Application {
             nick_nameField.setText(tableAll.get(pos).getNick_name());
             emailField.setText(tableAll.get(pos).getEmail());
             phoneField.setText(tableAll.get(pos).getCell_phone());
-            postion = pos;
+            position = pos;
     }
 
     int nextPrev(String sign)
     {
         if (Objects.equals(sign, "+")){
-        if (postion == tableAll.size() - 1)
-        { return postion = 0; }
-        return ++postion; }
+        if (position == tableAll.size() - 1)
+        { return position = 0; }
+        return ++position; }
         else{
-            if(postion > 0)
-            { return --postion; }
-            return postion = tableAll.size() - 1; }
+            if(position > 0)
+            { return --position; }
+            return position = tableAll.size() - 1; }
     }
 
     @Override
@@ -109,7 +107,7 @@ public class DataBase extends Application {
         gridContent.add(phoneField, 1, 4);
 
         //Display first row as a start
-        displayingData(postion);
+        displayingData(position);
 
         //First button
         firstButton.addEventHandler(ActionEvent.ACTION, event -> displayingData(0)); // try and catch
@@ -119,6 +117,7 @@ public class DataBase extends Application {
         nextButton.addEventHandler(ActionEvent.ACTION, event -> displayingData(nextPrev("+")));
         //Previous button
         prevButton.addEventHandler(ActionEvent.ACTION, event -> displayingData(nextPrev("-")));
+
         //Delete button
         deleteButton.addEventHandler(ActionEvent.ACTION, event -> {
             try {
@@ -127,7 +126,7 @@ public class DataBase extends Application {
                 if (tableAll.get(i).getId() == parseInt(idField.getText()))
                     {
                         tableAll.remove(i);
-                        displayingData(0); //It should just clear the text fields
+                        displayingData(0); //It should just clear the text fields and fill it with first row
                         System.out.println("Deleted Successfully");
                     }
                 }
@@ -135,6 +134,7 @@ public class DataBase extends Application {
                 e.printStackTrace();
             }
         });
+
         //Update button
         updateButton.addEventHandler(ActionEvent.ACTION, event -> {
             ContactPerson updateRow = new ContactPerson(
@@ -146,12 +146,12 @@ public class DataBase extends Application {
             try {
                 updateData(updateRow);
                 System.out.println("Updated Successfully");
-                System.out.println(parseInt(idField.getText()));
             } catch (SQLException e) {
                 e.printStackTrace();
                 System.out.println("Can't Update");
             }
         });
+
         //New button
         newButton.addEventHandler(ActionEvent.ACTION, event -> {
             ContactPerson insertRow = new ContactPerson(
@@ -171,6 +171,11 @@ public class DataBase extends Application {
             }
         });
 
+        StackPane mainStack = new StackPane();
+
+        VBox backGround = new VBox();
+        backGround.setStyle("-fx-background-color: gray");
+        mainStack.getChildren().add(backGround);
 
         mainLayOut.setHgap(2);
         FlowPane.setMargin(newButton, new Insets(20, 0, 20, 30));
@@ -180,21 +185,20 @@ public class DataBase extends Application {
 
         body.setCenter(gridContent);
         body.setBottom(mainLayOut);
+        mainStack.getChildren().add(body);
 
-        File cssLocation = new File("C:\\Users\\mohya\\Desktop\\JavaLabs\\JavaNotepad\\src\\main\\java\\dataBase\\database.css");
+        Scene scene = new Scene(mainStack, 400, 400);
 
-        Scene scene = new Scene(body, 400, 400); //Stack pane will added and gui will be fixed soon
-
+        stage.setMinWidth(400);
+        stage.setMaxWidth(400);
         stage.setTitle("DataBase Interface");
 
         scene.getStylesheets().clear();
-        scene.getStylesheets().add("file:///" + cssLocation.getAbsolutePath().replace("\\", "/"));
         stage.setScene(scene);
         stage.show();
     }
 
-
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args)  {
         ContactDAO.connection();
         Application.launch(args);
         ContactDAO.ends();
