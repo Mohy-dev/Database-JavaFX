@@ -1,20 +1,13 @@
 package dataBase;
 
-import java.sql.Date;
 
 public class ContactPerson {
 
-    private int id;
-    private String name;
-    private String nick_name;
-//    private String address;
-//    private String home_phone;
-//    private String work_phone;
-    private String cell_phone;
-    private String email;
-//    private Date birthday;
-//    private String web_site;
-//    private String profession;
+    private final int id;
+    private final String name;
+    private final String nick_name;
+    private final String cell_phone;
+    private final String email;
 
     public ContactPerson(int id,
     String name,
