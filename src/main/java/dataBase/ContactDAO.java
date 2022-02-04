@@ -19,9 +19,6 @@ public class ContactDAO  {
     static final String utf8 = "?characterEncoding=utf8";
     static final String tableNAme = "contact";
     static Connection con;
-    static Statement st;
-
-//    "jdbc:mysql://localhost:3306/addressbook?characterEncoding=utf8","root","1234"
 
     static void connection() {
         try {
@@ -104,13 +101,13 @@ public class ContactDAO  {
 
     static void updateData(ContactPerson update) throws SQLException{
         try {
-            String updateQuery = "update contact set " +
-                    "name = '" + update.getName() + "''," +
-                    "nick_name = '" + update.getNick_name() + "'," +
-                    "cell_phone = '" + update.getCell_phone() + "'," +
-                    "email = '" + update.getEmail() + " where id = " + update.getId() + ";"; // will be replaced with prepared statement
-            Statement st = con.createStatement();
-            st.executeUpdate(updateQuery);
+            PreparedStatement st= con.prepareStatement("update contact set name = ?, nick_name = ?, cell_phone = ?, email = ? where id = ?");
+            st.setString(1,update.getName());
+            st.setString(2,update.getNick_name());
+            st.setString(3,update.getCell_phone());
+            st.setString(4,update.getEmail());
+            st.setInt(5,update.getId());
+            st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Can't update data");
@@ -118,4 +115,3 @@ public class ContactDAO  {
     }
 
 }
-
